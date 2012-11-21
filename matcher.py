@@ -13,3 +13,7 @@ cursor.execute("ALTER TABLE ssa_schools ADD code bigint;")
 cursor.execute("ALTER TABLE ssa_schools ALTER code TYPE varchar(14);")
 
 cursor.execute("INSERT INTO ssa_schools(id, bid, aid, dise_code, name, cat, sex, moi, mgmt, status, code, coord) SELECT * FROM tb_school INNER JOIN dblink('ssa', 'SELECT code, centroid from schools') AS ssa(code bigint, coord geometry) ON tb_school.dise_code = CAST(ssa.code AS varchar);")
+connection.commit()
+cursor.close()
+connection.close()
+
