@@ -16,7 +16,7 @@ cursor.execute("ALTER TABLE ssa_schools ALTER code TYPE varchar(14);")
 cursor.execute("CREATE TABLE ssa_unmatched (dise_code varchar(14));")
 
 cursor.execute("INSERT INTO ssa_schools(id, bid, aid, dise_code, name, cat, sex, moi, mgmt, status, code, coord) SELECT * FROM tb_school INNER JOIN dblink('ssa', 'SELECT code, centroid from schools') AS ssa(code bigint, coord geometry) ON tb_school.dise_code = CAST(ssa.code AS varchar);")
-cursor.execute("INSERT INTO ssa_unmatched(dise_code) SELECT dise_code, name FROM tb_school WHERE tb_school.dise_code NOT IN (SELECT CAST(ssa.code AS varchar) FROM dblink('ssa', 'SELECT code, centroid from schools') AS ssa(code bigint, coord geometry));")
+cursor.execute("INSERT INTO ssa_unmatched(dise_code) SELECT dise_code FROM tb_school WHERE tb_school.dise_code NOT IN (SELECT CAST(ssa.code AS varchar) FROM dblink('ssa', 'SELECT code, centroid from schools') AS ssa(code bigint, coord geometry));")
 
 connection.commit()
 
